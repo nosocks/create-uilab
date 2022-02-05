@@ -5,10 +5,12 @@ import pkg from '../package.json'
 
 import '@nosocks/uilab/react/style.css'
 
+const components = import.meta.glob('./<%= componentsPath %>/**/*.jsx')
+
 ReactDOM.render(
   <React.StrictMode>
     <AppComponent
-      componentsGlob={import.meta.glob('./components/**/*.jsx')}
+      componentsGlob={components}
       sidebarTitle={pkg.name}
     />
   </React.StrictMode>,

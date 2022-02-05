@@ -3,7 +3,8 @@
 const fs = require('fs')
 const path = require('path')
 const inquirer = require('inquirer')
-const { green, red, bold } = require('colorette')
+const { cyanBright, redBright, bold } = require('colorette')
+const ejs = require('ejs')
 
 const templates = fs.readdirSync(path.join(__dirname, 'templates'))
 const questions = [
@@ -18,9 +19,15 @@ const questions = [
     type: 'input',
     message: 'Project name:',
   },
+  {
+    name: 'componentsPath',
+    type: 'input',
+    message: 'Path to your components relative to the main file:',
+    default: 'components'
+  },
 ]
 
-const createDirectoryContent = (cwd, templatePath, projectName) => {
+const createDirectoryContent = (cwd, templatePath, { projectName, componentsPath }) => {
   const skip = ['node_modules', 'pnpm-lock.yaml']
   const filesToCreate = fs.readdirSync(templatePath)
   filesToCreate.forEach((file) => {
@@ -29,30 +36,42 @@ const createDirectoryContent = (cwd, templatePath, projectName) => {
 
     if (skip.indexOf(file) > -1) return
 
-    if (stats.isFile()) {
-      const contents = fs.readFileSync(origFilePath, 'utf8')
-      const writePath = path.join(cwd, projectName, file)
-      fs.writeFileSync(writePath, contents, 'utf8')
-    } else if (stats.isDirectory()) {
-      fs.mkdirSync(path.join(cwd, projectName, file))
-      createDirectoryContent(cwd, origFilePath, path.join(projectName, file))
+    try {
+      if (stats.isFile()) {
+        let content = fs.readFileSync(origFilePath, 'utf8')
+        content = ejs.render(content, { projectName, componentsPath })
+        const writePath = path.join(cwd, projectName, file)
+        fs.writeFileSync(writePath, content, 'utf8')
+      } else if (stats.isDirectory()) {
+        fs.mkdirSync(path.join(cwd, projectName, file))
+        createDirectoryContent(cwd, origFilePath, { projectName: path.join(projectName, file), componentsPath })
+      }
+    } catch {
+      console.log(bold(redBright('there was an error creating the project :(')))
+      return
     }
   })
 }
 
-inquirer.prompt(questions).then(({ template, name }) => {
+inquirer.prompt(questions).then(({ template, name, componentsPath }) => {
   const cwd = process.cwd()
+  let cp = componentsPath
   const templatePath = path.join(__dirname, 'templates', template)
   const targetPath = path.join(cwd, name)
   if (fs.existsSync(targetPath)) {
-    console.log(bold(red(`Folder ${targetPath} already exists.`)))
+    console.log(bold(redBright(`Folder ${targetPath} already exists.`)))
     return
   }
+  if (cp.startsWith('/')) {
+    cp = cp.slice(1)
+  } else if (cp.endsWith('/')) {
+    cp = cp.slice(0, -1)
+  }
   fs.mkdirSync(targetPath)
-  createDirectoryContent(cwd, templatePath, name)
+  createDirectoryContent(cwd, templatePath, { projectName: name, componentsPath: cp })
   console.log(
     bold(
-      green(
+      cyanBright(
         `🚀 Your new vite + uilab project is ready! cd into /${name}/ and install the project dependencies.`
       )
     )

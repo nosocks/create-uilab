@@ -25,6 +25,7 @@
   "homepage": "https://github.com/nosocks/create-uilab#readme",
   "dependencies": {
     "colorette": "^2.0.16",
+    "ejs": "^3.1.6",
     "inquirer": "^8.2.0"
   }
 }
