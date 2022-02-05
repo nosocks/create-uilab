@@ -10,7 +10,7 @@ const components = import.meta.glob('./<%= componentsPath %>/**/*.jsx')
 ReactDOM.render(
   <React.StrictMode>
     <AppComponent
-      componentsGlob={components}
+      components={components}
       sidebarTitle={pkg.name}
     />
   </React.StrictMode>,
