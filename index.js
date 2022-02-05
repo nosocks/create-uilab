@@ -53,7 +53,7 @@ inquirer.prompt(questions).then(({ template, name }) => {
   console.log(
     bold(
       green(
-        `Your new vite + uilab project is ready! cd into /${name}/ and install the project dependencies.`
+        `🚀 Your new vite + uilab project is ready! cd into /${name}/ and install the project dependencies.`
       )
     )
   )
