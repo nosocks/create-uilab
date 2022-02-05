@@ -4,6 +4,7 @@
   "description": "a cli tool to scaffold a new uilab project",
   "main": "./index.js",
   "bin": {
+    "create-uilab": "./index.js",
     "uilab": "./index.js"
   },
   "engines": {
