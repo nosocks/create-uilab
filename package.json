@@ -1,0 +1,29 @@
+{
+  "name": "create-uilab",
+  "version": "1.0.0",
+  "description": "a cli tool to scaffold a new uilab project",
+  "main": "index.js",
+  "bin": {
+    "uilab": "index.js"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nosocks/create-uilab.git"
+  },
+  "author": "nosocks",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nosocks/create-uilab/issues"
+  },
+  "homepage": "https://github.com/nosocks/create-uilab#readme",
+  "dependencies": {
+    "colorette": "^2.0.16",
+    "inquirer": "^8.2.0"
+  }
+}
