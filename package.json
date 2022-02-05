@@ -1,6 +1,6 @@
 {
   "name": "create-uilab",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "a cli tool to scaffold a new uilab project",
   "main": "./index.js",
   "bin": {
